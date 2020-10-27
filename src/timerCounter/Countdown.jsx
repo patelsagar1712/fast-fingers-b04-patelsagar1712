@@ -38,7 +38,6 @@ export default class CountdownTimer extends React.Component {
           prevWordTime: prevProps.timeForWord,
         },
         () => {
-          console.log(this.props);
           this.props.setScore(this.state.currentScore);
         }
       );

@@ -19,6 +19,9 @@ class startScreen extends Component {
       easyWords: [],
       mediumWords: [],
       hardWords: [],
+      bestScore: 0,
+      bestScoreFlag: false,
+      bestScoreId: 0,
     };
     this.state = { ...this.currentState };
     this.scoreList = [];
@@ -33,9 +36,9 @@ class startScreen extends Component {
         this.state.mediumWords.push(word);
       else if (hardWordFlag) this.state.hardWords.push(word);
 
-      if (this.state.easyWords.length === 150) easyWordFlag = false;
-      if (this.state.mediumWords.length === 150) medWordFlag = false;
-      if (this.state.hardWords.length === 500) hardWordFlag = false;
+      // if (this.state.easyWords.length === 150) easyWordFlag = false;
+      // if (this.state.mediumWords.length === 150) medWordFlag = false;
+      // if (this.state.hardWords.length === 500) hardWordFlag = false;
     }
   }
   state = {};
@@ -66,11 +69,24 @@ class startScreen extends Component {
     ));
     return scoresList;
   };
+  bestScore = () => {
+    if (this.state.currentScore > this.state.bestScore) {
+      this.setState({
+        bestScore: this.state.currentScore,
+        bestScoreFlag: true,
+        bestScoreId: this.scoreList.length,
+      });
+    } else this.setState({ bestScoreFlag: false });
+  };
   onGameOver = () => {
     this.scoreList.push(this.state.currentScore);
+    this.bestScore();
     this.setState({ ...this.state, gameOverFlag: true });
   };
-
+  onStop = () => {
+    this.bestScore();
+    this.setState({ ...this.state, gameOverFlag: true });
+  };
   setDifficulty = () => {
     let difficultyFactor;
     let difficulty = this.state.selectDifficulty;
@@ -151,7 +167,7 @@ class startScreen extends Component {
   onUserInput = (e) => {
     const value = e.target.value.toUpperCase();
     if (value === this.state.currentWord) {
-      const difficultyFactor = this.state.difficultyFactor + 0.01;
+      const difficultyFactor = this.state.currDifficulty + 0.01;
 
       let level, words;
       if (difficultyFactor >= 2) {
@@ -165,8 +181,6 @@ class startScreen extends Component {
         words = this.state.mediumWords;
       }
 
-      if (this.state.level !== level) console.log("level changed!");
-
       const newWord = this.getNewWord(words, difficultyFactor);
       const timeForWord = Math.floor(newWord.length / difficultyFactor) + 1;
 
@@ -177,7 +191,8 @@ class startScreen extends Component {
         timeForWord: timeForWord,
         level: level,
         difficulty: level,
-        difficultyFactor: parseFloat(difficultyFactor.toFixed(1)),
+        difficultyFactor: parseFloat(difficultyFactor.toFixed(2)),
+        currDifficulty: parseFloat(difficultyFactor.toFixed(2)),
       });
     } else {
       this.setState({ ...this.state, userInput: value });
@@ -189,12 +204,38 @@ class startScreen extends Component {
     let counterComponent;
     if (this.state.gameOverFlag) {
       return (
-        <div className="text-center text">
-          <h1>GAME OVER!!!!!</h1>
-          <br></br>
-          <h1>{`Your Score ${this.state.currentScore}`}</h1>
-          <br></br>
-          <button onClick={this.onPlayAgain}>Play Again</button>
+        <div>
+          <div className="row">
+            <div className="col-md-6 lg md sm ">
+              <div className="textHeader">{this.state.name}</div>
+            </div>
+            <br />
+            <div className="col-md-6  lg md sm" style={{ textAlign: "right" }}>
+              <div className="textHeader">LEVEL: {this.state.difficulty}</div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6 lg md sm">
+              <div className="textHeader">Fast Fingers</div>
+            </div>
+            <br />
+            <div className="col-6 lg md sm" style={{ textAlign: "right" }}>
+              <div className="textHeader">
+                Current Score : {this.state.currentScore}
+              </div>
+            </div>
+          </div>
+
+          <div className="stopGame">
+            <h1>GAME OVER!!!!!</h1>
+            <br></br>
+            <h1>{`Your Score ${this.state.currentScore}`}</h1>
+            {this.state.bestScoreFlag ? <h2>BEST SCORE</h2> : <h2></h2>}
+            <br></br>
+            <button className="start-game" onClick={this.onPlayAgain}>
+              Play Again
+            </button>
+          </div>
         </div>
       );
     }
@@ -239,8 +280,8 @@ class startScreen extends Component {
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-3">
+            <div className="row">
+              <div className="col-sm-3">
                 <div className="row mt-2">
                   <div className="text-center">
                     <div className="scores-box">
@@ -252,7 +293,7 @@ class startScreen extends Component {
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div className="col-sm-6">
                 <div className="div-timer text-center">
                   <div className="timer">{counterComponent}</div>
                   <br></br>
@@ -267,6 +308,11 @@ class startScreen extends Component {
                   <br></br>
                 </div>
               </div>
+            </div>
+            <div className="col-sm-3">
+              <button className="start-game" onClick={this.onStop}>
+                Stop Game
+              </button>
             </div>
           </div>
         </React.Fragment>

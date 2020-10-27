@@ -32,8 +32,17 @@
   text-align: center;
 }
 
+.stopGame {
+  text-align: center;
+  color: #ff5155;
+  align-self: auto;
+  width: 800px;
+  margin: 0 auto;
+}
 .scores-box {
   min-height: 100px;
+  max-height: 500px;
+  overflow: auto;
   width: 100%;
   border: 3px solid #ff5155;
   padding: 10px;
@@ -45,8 +54,8 @@
 .start-game {
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
   font-family: Gotham;
-  font-size: 48px;
-  font-weight: 500;
+  font-size: 30px;
+  font-weight: 1000;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.21;
