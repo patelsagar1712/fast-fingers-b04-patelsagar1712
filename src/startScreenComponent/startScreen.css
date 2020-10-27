@@ -1,0 +1,85 @@
+.text {
+  color: #ff5155;
+}
+.textHeader {
+  font-family: LaserCorpsGradient;
+  font-size: 30px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  color: #ff5155;
+}
+
+.mainscreenHeader {
+  font-family: LaserCorpsGradient;
+  font-size: 81px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff5155;
+}
+.positionSet {
+  text-align: "center";
+  margin: "auto";
+  padding: "50px";
+}
+.text-center {
+  text-align: center;
+}
+
+.scores-box {
+  min-height: 100px;
+  width: 100%;
+  border: 3px solid #ff5155;
+  padding: 10px;
+  margin: auto;
+}
+.error button {
+  border-bottom: 1px solid #eb516d;
+}
+.start-game {
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+  font-family: Gotham;
+  font-size: 48px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff5155;
+}
+
+.div-timer {
+  max-width: 90%;
+  margin: auto;
+}
+
+.timer {
+  margin: auto;
+}
+
+.input-box {
+  background-color: rgba(245, 245, 245, 0.404);
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  /* border: 2px solid #ff5155; */
+  color: black;
+  text-transform: uppercase;
+  max-width: 70%;
+  padding-left: 10px;
+}
+
+.new-word {
+  font-size: 2rem;
+  color: white;
+  font-weight: 800;
+}
