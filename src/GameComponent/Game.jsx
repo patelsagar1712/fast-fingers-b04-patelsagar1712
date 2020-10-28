@@ -94,7 +94,12 @@ class startScreen extends Component {
         bestScoreFlag: true,
         bestScoreId: this.scoreList.length - 1,
       });
-    } else this.setState({ bestScoreFlag: false });
+    } else {
+      this.setState({
+        ...this.state,
+        bestScoreFlag: false,
+      });
+    }
   };
   //Method called when Game is over
   onGameOver = () => {
@@ -105,6 +110,7 @@ class startScreen extends Component {
   //Method called when stop is clicked
   onStop = () => {
     this.bestScore();
+    this.scoreList.push(this.state.currentScore);
     this.setState({ ...this.state, gameOverFlag: true });
   };
   //Method to set current score to Score list
@@ -231,7 +237,7 @@ class startScreen extends Component {
       return (
         <div>
           <div className="row">
-            <div className="col-md-6 lg md sm ">
+            <div className="col ">
               <div className="textHeader" style={{ textAlign: "left" }}>
                 <img
                   className="play"
@@ -242,14 +248,14 @@ class startScreen extends Component {
               </div>
             </div>
             <br />
-            <div className="col-md-6  lg md sm">
+            <div className="col">
               <div className="textHeader" style={{ textAlign: "right" }}>
                 FAST FINGERS
               </div>
             </div>
           </div>
           <div className="row">
-            <div className="col-6 lg md sm">
+            <div className="col">
               <div className="textHeader" style={{ textAlign: "left" }}>
                 <img
                   className="play"
@@ -297,7 +303,7 @@ class startScreen extends Component {
           <div>
             <div>
               <div className="row">
-                <div className="col-md-6 lg md sm ">
+                <div className="col ">
                   <div className="textHeader" style={{ textAlign: "left" }}>
                     <img
                       className="play"
@@ -308,14 +314,14 @@ class startScreen extends Component {
                   </div>
                 </div>
                 <br />
-                <div className="col-md-6  lg md sm">
+                <div className="col">
                   <div className="textHeader" style={{ textAlign: "right" }}>
                     FAST FINGERS
                   </div>
                 </div>
               </div>
               <div className="row">
-                <div className="col-6 lg md sm">
+                <div className="col">
                   <div className="textHeader" style={{ textAlign: "left" }}>
                     <img
                       className="play"
@@ -326,7 +332,7 @@ class startScreen extends Component {
                   </div>
                 </div>
                 <br />
-                <div className="col-6 lg md sm">
+                <div className="col">
                   <div className="textHeader" style={{ textAlign: "right" }}>
                     Score : {this.state.currentScore}
                   </div>
@@ -340,6 +346,16 @@ class startScreen extends Component {
                     <h3 className="text">Scores</h3>
                     {this.getScoreList()}
                   </div>
+                </div>
+                <div className="col">
+                  <button className="start-game" onClick={this.onStop}>
+                    <img
+                      className="play"
+                      src={require("../images/cross.png")}
+                      alt=""
+                    ></img>
+                    Stop Game
+                  </button>
                 </div>
               </div>
               <div className="col-sm-8">
@@ -357,11 +373,6 @@ class startScreen extends Component {
                   <br></br>
                 </div>
               </div>
-            </div>
-            <div className="col-sm-3">
-              <button className="start-game" onClick={this.onStop}>
-                Stop Game
-              </button>
             </div>
           </div>
         </React.Fragment>

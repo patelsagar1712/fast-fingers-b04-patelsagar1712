@@ -3,13 +3,14 @@
 }
 .textHeader {
   font-family: LaserCorpsGradient;
-  font-size: 35px;
+  font-size: 30px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.2;
   letter-spacing: normal;
   color: #ff5155;
+  padding-left: 20px;
 }
 
 .positionSet {
@@ -32,7 +33,6 @@
   text-align: center;
   color: white;
   align-self: auto;
-  width: 800px;
   margin: 0 auto;
 }
 .scores-box {

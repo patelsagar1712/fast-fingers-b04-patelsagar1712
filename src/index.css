@@ -22,6 +22,8 @@ body div {
   text-align: center;
   color: #ff5155;
   width: auto;
+  overflow: hidden;
+  padding: 1px;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
