@@ -3,7 +3,7 @@
 }
 .textHeader {
   font-family: LaserCorpsGradient;
-  font-size: 30px;
+  font-size: 35px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -12,17 +12,6 @@
   color: #ff5155;
 }
 
-.mainscreenHeader {
-  font-family: LaserCorpsGradient;
-  font-size: 81px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.2;
-  letter-spacing: normal;
-  text-align: left;
-  color: #ff5155;
-}
 .positionSet {
   text-align: "center";
   margin: "auto";
@@ -31,64 +20,87 @@
 .text-center {
   text-align: center;
 }
+.score-text {
+  color: #ff5155;
+  text-align: left;
+  font-size: 10px;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
 
 .stopGame {
   text-align: center;
-  color: #ff5155;
+  color: white;
   align-self: auto;
   width: 800px;
   margin: 0 auto;
 }
 .scores-box {
-  min-height: 100px;
-  max-height: 500px;
+  min-height: 50px;
+  width: 80%;
+  max-height: 450px;
   overflow: auto;
   width: 100%;
   border: 3px solid #ff5155;
   padding: 10px;
+  padding-left: 50px;
   margin: auto;
 }
 .error button {
   border-bottom: 1px solid #eb516d;
 }
 .start-game {
-  text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
-  font-family: Gotham;
-  font-size: 30px;
-  font-weight: 1000;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.21;
-  letter-spacing: normal;
-  text-align: left;
+  background-color: transparent;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
   color: #ff5155;
+  padding-right: 20px;
+  margin-top: 30px;
+}
+.play {
+  max-width: 4rem;
+  max-height: 4rem;
+  margin-right: 10px;
+  padding-bottom: 10px;
+  height: 50px;
 }
 
 .div-timer {
   max-width: 90%;
+  margin-top: 7%;
   margin: auto;
 }
 
 .timer {
   margin: auto;
 }
-
+.keyboard {
+  margin-top: 7%;
+  width: 150px;
+  height: 100px;
+}
 .input-box {
-  background-color: rgba(245, 245, 245, 0.404);
+  width: 350px;
   height: 50px;
-  font-size: 1.5rem;
-  font-weight: 500;
-  border: none;
+  margin-right: 0;
+  margin-bottom: 20px;
+  margin-top: 20px;
   border-radius: 5px;
-  /* border: 2px solid #ff5155; */
-  color: black;
-  text-transform: uppercase;
-  max-width: 70%;
-  padding-left: 10px;
+  background-color: transparent;
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.8);
+  border: solid 1px #ffffff;
+  color: #97a5a7;
+  padding-left: 22px;
+  /* padding-right: 20px; */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .new-word {
   font-size: 2rem;
   color: white;
   font-weight: 800;
+  margin-top: 7%;
 }

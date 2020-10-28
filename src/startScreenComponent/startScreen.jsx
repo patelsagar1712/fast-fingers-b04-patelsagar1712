@@ -22,9 +22,12 @@ class startScreen extends Component {
       bestScore: 0,
       bestScoreFlag: false,
       bestScoreId: 0,
+      nameError: "",
     };
     this.state = { ...this.currentState };
     this.scoreList = [];
+
+    //Spliting all the words into differenet variables
     let easyWordFlag = true,
       medWordFlag = true,
       hardWordFlag = true;
@@ -36,57 +39,86 @@ class startScreen extends Component {
         this.state.mediumWords.push(word);
       else if (hardWordFlag) this.state.hardWords.push(word);
 
+      //For Optimization for delay
       // if (this.state.easyWords.length === 150) easyWordFlag = false;
       // if (this.state.mediumWords.length === 150) medWordFlag = false;
       // if (this.state.hardWords.length === 500) hardWordFlag = false;
     }
   }
   state = {};
-  // Iconawesomekeyboard = {
-  //   backgroundImage: 'url("../images/Icon awesome-keyboard@2x.png")',
-  //   backgroundRepeat: "no-repeat",
-  //   width: "19%",
-  //   zIndex: 1,
-  //   top: "60px",
-  //   left: "80px",
-  // };
+  //Method to save Name from UI
   addName = (e) => {
     this.setState({ name: e.target.value });
   };
+  //Method to save selected Difficulty
   selectDifficulty = (e) => {
     this.setState({ selectDifficulty: e.target.value });
   };
-  saveValue = () => {
-    this.setDifficulty();
-    this.setState({ startGameFlag: true, startTimeFlag: true });
+  //Method to check whether Name has been written
+  validateName = () => {
+    if (this.state.name === "" || this.state.name.length === 0) {
+      this.setState({ nameError: "Please Enter Name" });
+      return false;
+    } else {
+      this.setState({ nameError: "" });
+      return true;
+    }
   };
+  //Method to validate, pre-check  and set variables to start game
+  saveValue = () => {
+    if (this.validateName()) {
+      this.setDifficulty();
+      this.setState({ startGameFlag: true, startTimeFlag: true });
+    }
+  };
+  //Method to get scoreList
   getScoreList = () => {
     if (this.scoreList.length === 0) {
       return;
     }
     const scoresList = this.scoreList.map((score, i) => (
-      <p key={i} className="text">{`Score #${i + 1}: ${score}`}</p>
+      <p key={i}>
+        <p className="score-text">
+          {this.state.bestScoreId === i ? "Personal Best" : null}
+        </p>
+        <p className="text-white">{`Score #${i + 1}: ${score}`}</p>
+      </p>
     ));
     return scoresList;
   };
+  //Method to find best Sccore
   bestScore = () => {
     if (this.state.currentScore > this.state.bestScore) {
       this.setState({
         bestScore: this.state.currentScore,
         bestScoreFlag: true,
-        bestScoreId: this.scoreList.length,
+        bestScoreId: this.scoreList.length - 1,
       });
     } else this.setState({ bestScoreFlag: false });
   };
+  //Method called when Game is over
   onGameOver = () => {
     this.scoreList.push(this.state.currentScore);
     this.bestScore();
     this.setState({ ...this.state, gameOverFlag: true });
   };
+  //Method called when stop is clicked
   onStop = () => {
     this.bestScore();
     this.setState({ ...this.state, gameOverFlag: true });
   };
+  //Method to set current score to Score list
+  setScore = (value) => {
+    this.setState({ ...this.state, currentScore: value });
+  };
+  //Method to set and restart Game
+  onPlayAgain = () => {
+    this.setState(
+      { ...this.INITIAL_STATE, gameOverFlag: false, userInput: "" },
+      this.setDifficulty
+    );
+  };
+  //Method to update difficulty, find new word from the currdifficulty and calculate time
   setDifficulty = () => {
     let difficultyFactor;
     let difficulty = this.state.selectDifficulty;
@@ -123,16 +155,16 @@ class startScreen extends Component {
       currDifficulty: difficultyFactor,
     });
   };
-
-  getCurrentWordComponent = () => {
-    const wordCharacters = this.state.currentWord.split("");
-    const userInputCharacters = this.state.userInput.split("");
+  //Method to check user input and validate whether it is correct
+  checkCurrentWord = () => {
+    const currWordChar = this.state.currentWord.split("");
+    const currUserChar = this.state.userInput.split("");
     return (
       <div className="new-word">
-        {wordCharacters.map((char, i) => {
+        {currWordChar.map((char, i) => {
           let color;
           if (i < this.state.userInput.length) {
-            color = char === userInputCharacters[i] ? "green" : "red";
+            color = char === currUserChar[i] ? "green" : "red";
           }
           return (
             <span key={i} style={{ color: color }}>
@@ -143,15 +175,7 @@ class startScreen extends Component {
       </div>
     );
   };
-  setScore = (value) => {
-    this.setState({ ...this.state, currentScore: value });
-  };
-  onPlayAgain = () => {
-    this.setState(
-      { ...this.INITIAL_STATE, gameOverFlag: false, userInput: "" },
-      this.setDifficulty
-    );
-  };
+  //Method to get new Word from current difficulty
   getNewWord = (words, difficultyFactor = null) => {
     if (difficultyFactor >= 1.5 && difficultyFactor < 2) {
       const random = Math.round(Math.random() * (words.length - 1));
@@ -164,6 +188,7 @@ class startScreen extends Component {
     const random = Math.round(Math.random() * (words.length - 1));
     return words[random].toUpperCase();
   };
+  //Method for curr difficulty and return new words to UI
   onUserInput = (e) => {
     const value = e.target.value.toUpperCase();
     if (value === this.state.currentWord) {
@@ -207,32 +232,49 @@ class startScreen extends Component {
         <div>
           <div className="row">
             <div className="col-md-6 lg md sm ">
-              <div className="textHeader">{this.state.name}</div>
+              <div className="textHeader" style={{ textAlign: "left" }}>
+                <img
+                  className="play"
+                  src={require("../images/person.png")}
+                  alt=""
+                ></img>
+                {this.state.name}
+              </div>
             </div>
             <br />
-            <div className="col-md-6  lg md sm" style={{ textAlign: "right" }}>
-              <div className="textHeader">LEVEL: {this.state.difficulty}</div>
+            <div className="col-md-6  lg md sm">
+              <div className="textHeader" style={{ textAlign: "right" }}>
+                FAST FINGERS
+              </div>
             </div>
           </div>
           <div className="row">
             <div className="col-6 lg md sm">
-              <div className="textHeader">Fast Fingers</div>
-            </div>
-            <br />
-            <div className="col-6 lg md sm" style={{ textAlign: "right" }}>
-              <div className="textHeader">
-                Current Score : {this.state.currentScore}
+              <div className="textHeader" style={{ textAlign: "left" }}>
+                <img
+                  className="play"
+                  src={require("../images/gamepad.png")}
+                  alt=""
+                ></img>{" "}
+                LEVEL: {this.state.difficulty}
               </div>
             </div>
+            <br />
           </div>
-
+          <br></br>
+          <br></br>
           <div className="stopGame">
-            <h1>GAME OVER!!!!!</h1>
+            <h1>GAME OVER!</h1>
             <br></br>
-            <h1>{`Your Score ${this.state.currentScore}`}</h1>
-            {this.state.bestScoreFlag ? <h2>BEST SCORE</h2> : <h2></h2>}
+            <h1>{`YOUR SCORE ${this.state.currentScore}`}</h1>
+            {this.state.bestScoreFlag ? <h2>New High Score!</h2> : ""}
             <br></br>
             <button className="start-game" onClick={this.onPlayAgain}>
+              <img
+                className="play"
+                src={require("../images/reload.png")}
+                alt=""
+              ></img>
               Play Again
             </button>
           </div>
@@ -256,48 +298,55 @@ class startScreen extends Component {
             <div>
               <div className="row">
                 <div className="col-md-6 lg md sm ">
-                  <div className="textHeader">{this.state.name}</div>
+                  <div className="textHeader" style={{ textAlign: "left" }}>
+                    <img
+                      className="play"
+                      src={require("../images/person.png")}
+                      alt=""
+                    ></img>
+                    {this.state.name}
+                  </div>
                 </div>
                 <br />
-                <div
-                  className="col-md-6  lg md sm"
-                  style={{ textAlign: "right" }}
-                >
-                  <div className="textHeader">
-                    LEVEL: {this.state.difficulty}
+                <div className="col-md-6  lg md sm">
+                  <div className="textHeader" style={{ textAlign: "right" }}>
+                    FAST FINGERS
                   </div>
                 </div>
               </div>
               <div className="row">
                 <div className="col-6 lg md sm">
-                  <div className="textHeader">Fast Fingers</div>
+                  <div className="textHeader" style={{ textAlign: "left" }}>
+                    <img
+                      className="play"
+                      src={require("../images/gamepad.png")}
+                      alt=""
+                    ></img>
+                    LEVEL: {this.state.difficulty}
+                  </div>
                 </div>
                 <br />
-                <div className="col-6 lg md sm" style={{ textAlign: "right" }}>
-                  <div className="textHeader">
-                    Current Score : {this.state.currentScore}
+                <div className="col-6 lg md sm">
+                  <div className="textHeader" style={{ textAlign: "right" }}>
+                    Score : {this.state.currentScore}
                   </div>
                 </div>
               </div>
             </div>
             <div className="row">
-              <div className="col-sm-3">
-                <div className="row mt-2">
-                  <div className="text-center">
-                    <div className="scores-box">
-                      <div className="mt-2">
-                        <h3 className="text">Scores</h3>
-                        {this.getScoreList()}
-                      </div>
-                    </div>
+              <div className="col-sm-2">
+                <div className="text-center">
+                  <div className="scores-box">
+                    <h3 className="text">Scores</h3>
+                    {this.getScoreList()}
                   </div>
                 </div>
               </div>
-              <div className="col-sm-6">
+              <div className="col-sm-8">
                 <div className="div-timer text-center">
                   <div className="timer">{counterComponent}</div>
                   <br></br>
-                  {this.getCurrentWordComponent()}
+                  {this.checkCurrentWord()}
                   <br></br>
                   <input
                     value={this.state.userInput}
@@ -321,10 +370,15 @@ class startScreen extends Component {
       return (
         <React.Fragment>
           <div className="positionSet">
-            <div style={this.Iconawesomekeyboard}></div>
-            <div>
+            <img
+              src={require("../images/keyboard.png")}
+              alt=""
+              className="keyboard"
+            ></img>
+            <br></br>
+            <div className="text">
               <div>
-                <h1>Fast Finger</h1>
+                <h1>FAST FINGER</h1>
               </div>
               <input
                 type="text"
@@ -333,15 +387,10 @@ class startScreen extends Component {
                 required
                 className="input-box"
               />
+              <div className="input-error">{this.state.nameError}</div>
               <br></br>
               <select
                 selected="Easy"
-                style={{
-                  border: "solid 1px #ffffff",
-                  width: "352px",
-                  borderRadius: "15px",
-                  boxshadow: "0 3px 16px 0 rgba(0, 0, 0, 0.8)",
-                }}
                 onChange={this.selectDifficulty}
                 className="input-box"
               >
@@ -351,6 +400,11 @@ class startScreen extends Component {
               </select>
               <br></br>
               <button className="start-game" onClick={this.saveValue}>
+                <img
+                  className="play"
+                  src={require("../images/play.png")}
+                  alt=""
+                />
                 Start Game
               </button>
             </div>
