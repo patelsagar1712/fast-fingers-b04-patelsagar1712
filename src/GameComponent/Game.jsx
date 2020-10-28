@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CountDownTimer from "../timerCounter/Countdown";
 import data from "../data/dictionary.json";
-import "../startScreenComponent/startScreen.css";
+import "./Game.css";
 class startScreen extends Component {
   constructor(props) {
     super(props);
